@@ -94,3 +94,8 @@ void AWeapon::ShowPickupWidget(bool bShowWidget)
 		PickupWidget->SetVisibility(bShowWidget);
 }
 
+void AWeapon::SetWeaponState(EWeaponState EWS_State)
+{
+	WeaponState = EWS_State;
+}
+

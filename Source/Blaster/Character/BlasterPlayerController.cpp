@@ -5,10 +5,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
+#include "BlasterCharacter.h"
 
 ABlasterPlayerController::ABlasterPlayerController()
 {
 	bReplicates = true;
+
 }
 
 void ABlasterPlayerController::BeginPlay()
@@ -40,6 +42,7 @@ void ABlasterPlayerController::SetupInputComponent()
 	if (!IsLocalController()) return;
 
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	
 	if (EnhancedInputComponent)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this,
@@ -50,6 +53,9 @@ void ABlasterPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this,
 			&ABlasterPlayerController::Jump);
+
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this,
+			&ABlasterPlayerController::EquipButtonPressed);
 			
 	}
 }
@@ -88,7 +94,22 @@ void ABlasterPlayerController::Jump()
 {
 	if (ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn()))
 	{
+		if (!IsLocalController())
+		{
+			return;
+		}
+		
 		ControlledCharacter->Jump();
+		
+	}
+}
+
+void ABlasterPlayerController::EquipButtonPressed()
+{
+	
+	if (ABlasterCharacter* BControlledCharacter = Cast<ABlasterCharacter>(GetPawn()))
+	{
+		BControlledCharacter->EquippingFunc();
 	}
 }
 

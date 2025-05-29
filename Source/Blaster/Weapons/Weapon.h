@@ -24,6 +24,7 @@ public:
 	AWeapon();
 	virtual void Tick(float DeltaTime) override;
 	void ShowPickupWidget(bool bShowWidget);
+	void SetWeaponState(EWeaponState EWS_State);
 
 protected:
 	virtual void BeginPlay() override;

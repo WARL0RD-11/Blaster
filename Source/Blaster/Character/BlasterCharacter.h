@@ -30,20 +30,24 @@ private:
 	UFUNCTION()
 	void OnRep_OverlappedWeapon(AWeapon* LastWeapon);
 
+	UPROPERTY(VisibleAnywhere)
+	class UCombatComponent* Combat;
 
+	void EquippingFunc();
 
 protected:
 	virtual void BeginPlay() override;
 
 
-
 public:	
 	ABlasterCharacter();
-
+	friend class ABlasterPlayerController;
 	virtual void Tick(float DeltaTime) override;
 
 	void SetOverlappedWeapon(AWeapon* Weapon);
 
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PostInitializeComponents() override;
+
 };
