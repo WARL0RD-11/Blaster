@@ -109,7 +109,10 @@ void ABlasterPlayerController::EquipButtonPressed()
 	
 	if (ABlasterCharacter* BControlledCharacter = Cast<ABlasterCharacter>(GetPawn()))
 	{
-		BControlledCharacter->EquippingFunc();
+		if (BControlledCharacter->HasAuthority() && IsLocalPlayerController())
+		{
+			BControlledCharacter->EquippingFunc();
+		}
 	}
 }
 
