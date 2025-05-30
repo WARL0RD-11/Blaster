@@ -103,7 +103,7 @@ void ABlasterCharacter::OnRep_OverlappedWeapon(AWeapon* LastWeapon)
 
 void ABlasterCharacter::EquippingFunc()
 {
-	if (Combat)
+	if (Combat && HasAuthority())
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
 	}

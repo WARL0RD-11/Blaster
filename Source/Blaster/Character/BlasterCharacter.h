@@ -33,15 +33,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;
 
-	void EquippingFunc();
-
 protected:
 	virtual void BeginPlay() override;
 
 
 public:	
 	ABlasterCharacter();
-	friend class ABlasterPlayerController;
 	virtual void Tick(float DeltaTime) override;
 
 	void SetOverlappedWeapon(AWeapon* Weapon);
@@ -49,5 +46,7 @@ public:
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
+
+	void EquippingFunc();
 
 };

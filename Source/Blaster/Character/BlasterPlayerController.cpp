@@ -106,6 +106,10 @@ void ABlasterPlayerController::Jump()
 
 void ABlasterPlayerController::EquipButtonPressed()
 {
+	if (!IsLocalController())
+	{
+		return;
+	}
 	
 	if (ABlasterCharacter* BControlledCharacter = Cast<ABlasterCharacter>(GetPawn()))
 	{
