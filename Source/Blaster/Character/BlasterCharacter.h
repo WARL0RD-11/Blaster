@@ -31,7 +31,7 @@ private:
 	void OnRep_OverlappedWeapon(AWeapon* LastWeapon);
 
 	UPROPERTY(VisibleAnywhere)
-	class UCombatComponent* Combat;
+	class UCombatComponent* m_Combat;
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,5 +48,8 @@ public:
 	virtual void PostInitializeComponents() override;
 
 	void EquippingFunc();
+	
+	UFUNCTION(Server, Reliable)
+	void ServerEquippingFunc();
 
 };

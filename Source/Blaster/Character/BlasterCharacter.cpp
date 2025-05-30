@@ -29,8 +29,8 @@ ABlasterCharacter::ABlasterCharacter()
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(RootComponent);
 
-	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
-	Combat->SetIsReplicated(true);
+	m_Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	m_Combat->SetIsReplicated(true);
 
 
 }
@@ -39,9 +39,9 @@ ABlasterCharacter::ABlasterCharacter()
 void ABlasterCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	if (Combat)
+	if (m_Combat)
 	{
-		Combat->Character = this;
+		m_Combat->Character = this;
 	}
 }
 
@@ -103,9 +103,24 @@ void ABlasterCharacter::OnRep_OverlappedWeapon(AWeapon* LastWeapon)
 
 void ABlasterCharacter::EquippingFunc()
 {
-	if (Combat && HasAuthority())
+	if (m_Combat)
 	{
-		Combat->EquipWeapon(OverlappingWeapon);
+		if (HasAuthority())
+		{
+			m_Combat->EquipWeapon(OverlappingWeapon);
+		}
+		else
+		{
+			ServerEquippingFunc();
+		}
+	}
+}
+
+void ABlasterCharacter::ServerEquippingFunc_Implementation()
+{
+	if (m_Combat)
+	{
+		m_Combat->EquipWeapon(OverlappingWeapon);
 	}
 }
 
