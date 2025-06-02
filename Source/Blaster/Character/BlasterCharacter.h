@@ -34,7 +34,7 @@ private:
 	class UCombatComponent* m_Combat;
 
 	UFUNCTION(Server, Reliable)
-	void ServerEquippingFunc();
+	void ServerEquippingFunc();  //RPC for Callback function that is being accessed in the Player Controller for equuipping
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,7 +50,11 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 
-	void EquippingFunc();
+	//controller functions
+	void EquippingFunc(); //Callback function that is being accessed in the Player Controller for equuipping.
+
+
+	bool IsWeaponEquipped();
 	
 
 
