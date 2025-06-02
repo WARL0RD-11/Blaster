@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	bool bIsAccelerating;
 
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool bWeaponEquipped;
+
 
 public:
 	virtual void NativeInitializeAnimation() override;

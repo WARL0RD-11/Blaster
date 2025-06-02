@@ -5,11 +5,11 @@
 #include "Blaster/Weapons/Weapon.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Net/UnrealNetwork.h"
 
 UCombatComponent::UCombatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 
@@ -26,9 +26,16 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 }
 
+void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
+}
+
+
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
-	EquippedWeapon = WeaponToEquip;
 
 	if (Character == nullptr || WeaponToEquip == nullptr) 
 		return;
@@ -44,6 +51,6 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	}
 
 	EquippedWeapon->SetOwner(Character);
-	EquippedWeapon->ShowPickupWidget(false);
+	//EquippedWeapon->ShowPickupWidget(false);
 }
 

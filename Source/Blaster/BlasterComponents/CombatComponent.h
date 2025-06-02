@@ -26,6 +26,8 @@ protected:
 
 private:	
 	ABlasterCharacter* Character;
+
+	UPROPERTY(Replicated)
 	AWeapon* EquippedWeapon;
 	
 };

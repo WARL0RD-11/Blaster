@@ -116,6 +116,14 @@ void ABlasterCharacter::EquippingFunc()
 	}
 }
 
+bool ABlasterCharacter::IsWeaponEquipped()
+{
+	if(m_Combat && m_Combat->EquippedWeapon)
+		return true;
+	else
+		return false;
+}
+
 void ABlasterCharacter::ServerEquippingFunc_Implementation()
 {
 	if (m_Combat)
