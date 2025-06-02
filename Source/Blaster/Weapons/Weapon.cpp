@@ -6,7 +6,6 @@
 #include "Components/WidgetComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Net/UnrealNetwork.h"
-#include "Components/SphereComponent.h"
 
 AWeapon::AWeapon()
 {
