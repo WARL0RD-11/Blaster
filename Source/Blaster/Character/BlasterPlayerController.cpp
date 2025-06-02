@@ -17,6 +17,7 @@ void ABlasterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	BControlledCharacter = Cast<ABlasterCharacter>(GetPawn());
 	// Only setup input on locally controlled clients
 	if (IsLocalController())
 	{
@@ -56,6 +57,9 @@ void ABlasterPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this,
 			&ABlasterPlayerController::EquipButtonPressed);
+
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this,
+			&ABlasterPlayerController::CrouchButtonPressed);
 			
 	}
 }
@@ -92,14 +96,14 @@ void ABlasterPlayerController::Look(const FInputActionValue& InputActionValue)
 
 void ABlasterPlayerController::Jump()
 {
-	if (ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn()))
+	if (BControlledCharacter)
 	{
 		if (!IsLocalController())
 		{
 			return;
 		}
 		
-		ControlledCharacter->Jump();
+		BControlledCharacter->Jump();
 		
 	}
 }
@@ -111,11 +115,33 @@ void ABlasterPlayerController::EquipButtonPressed()
 		return;
 	}
 	
-	if (ABlasterCharacter* BControlledCharacter = Cast<ABlasterCharacter>(GetPawn()))
+	if (BControlledCharacter)
 	{
 		BControlledCharacter->EquippingFunc();
 	}
 
 }
+
+void ABlasterPlayerController::CrouchButtonPressed()
+{
+	if (!IsLocalController())
+	{
+		return;
+	}
+
+	if (BControlledCharacter)
+	{
+		if (BControlledCharacter->bIsCrouched)
+		{
+			BControlledCharacter->UnCrouch();
+		}
+		else
+		{
+			BControlledCharacter->Crouch();
+		}
+	}
+
+}
+
 
 

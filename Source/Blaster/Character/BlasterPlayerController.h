@@ -26,6 +26,8 @@ public:
 
 private:
 
+	class ABlasterCharacter* BControlledCharacter;
+
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
 
@@ -41,6 +43,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> EquipAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> CrouchAction;
+
 
 
 	//Function for Move
@@ -48,4 +53,5 @@ private:
 	void Look(const FInputActionValue& InputActionValue);
 	void Jump();
 	void EquipButtonPressed();
+	void CrouchButtonPressed();
 };
