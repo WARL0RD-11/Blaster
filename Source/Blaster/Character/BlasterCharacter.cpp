@@ -58,12 +58,36 @@ void ABlasterCharacter::Tick(float DeltaTime)
 
 }
 
+void ABlasterCharacter::SetOverlappedWeapon(AWeapon* Weapon)
+{
+	
+	if (IsLocallyControlled())
+	{
+		if (OverlappingWeapon)
+		{
+			OverlappingWeapon->ShowPickupWidget(false);
+		}
+	}
+
+	OverlappingWeapon = Weapon;
+
+	if (IsLocallyControlled())
+	{
+		if (OverlappingWeapon)
+		{
+			OverlappingWeapon->ShowPickupWidget(true);
+		}
+	}
+}
+
+
 void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly);
 }
+
 
 void ABlasterCharacter::OnRep_OverlappedWeapon(AWeapon* LastWeapon)
 {
@@ -100,30 +124,3 @@ void ABlasterCharacter::ServerEquippingFunc_Implementation()
 	}
 }
 
-void ABlasterCharacter::SetOverlappedWeapon(AWeapon* Weapon)
-{
-
-	if (IsLocallyControlled())
-	{
-		if (OverlappingWeapon)
-		{
-			OverlappingWeapon->ShowPickupWidget(false);
-		}
-	}
-
-	OverlappingWeapon = Weapon;
-
-	if (IsLocallyControlled())
-	{
-		if (OverlappingWeapon)
-		{
-			OverlappingWeapon->ShowPickupWidget(true);
-		}
-	}
-}
-
-
-bool ABlasterCharacter::IsWeaponEquipped()
-{
-	return (m_Combat && m_Combat->EquippedWeapon);
-}

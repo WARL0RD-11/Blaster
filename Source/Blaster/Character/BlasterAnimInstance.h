@@ -30,10 +30,6 @@ protected:
 	bool bIsAccelerating;
 
 
-	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	bool bWeaponEquipped;
-
-
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
