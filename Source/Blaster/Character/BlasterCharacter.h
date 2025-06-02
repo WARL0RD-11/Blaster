@@ -33,6 +33,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* m_Combat;
 
+	UFUNCTION(Server, Reliable)
+	void ServerEquippingFunc();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -49,7 +52,6 @@ public:
 
 	void EquippingFunc();
 	
-	UFUNCTION(Server, Reliable)
-	void ServerEquippingFunc();
+
 
 };

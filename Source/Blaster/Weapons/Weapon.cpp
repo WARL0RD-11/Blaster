@@ -5,6 +5,8 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
+#include "Net/UnrealNetwork.h"
+#include "Components/SphereComponent.h"
 
 AWeapon::AWeapon()
 {
@@ -97,5 +99,28 @@ void AWeapon::ShowPickupWidget(bool bShowWidget)
 void AWeapon::SetWeaponState(EWeaponState EWS_State)
 {
 	WeaponState = EWS_State;
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	}
+}
+
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWeapon, WeaponState);
+}
+
+void AWeapon::OnRep_WeaponState()
+{
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Equipped :
+		ShowPickupWidget(false);
+		break;
+	}
 }
 

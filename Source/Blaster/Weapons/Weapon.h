@@ -25,6 +25,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void ShowPickupWidget(bool bShowWidget);
 	void SetWeaponState(EWeaponState EWS_State);
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+
+	UFUNCTION()
+	void OnRep_WeaponState();
 
 protected:
 	virtual void BeginPlay() override;
@@ -50,7 +55,7 @@ protected:
 
 private:
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere)
 	EWeaponState WeaponState;
 
 	UPROPERTY(VisibleAnywhere)
