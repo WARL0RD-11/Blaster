@@ -116,14 +116,6 @@ void ABlasterCharacter::EquippingFunc()
 	}
 }
 
-bool ABlasterCharacter::IsWeaponEquipped()
-{
-	if(m_Combat && m_Combat->EquippedWeapon)
-		return true;
-	else
-		return false;
-}
-
 void ABlasterCharacter::ServerEquippingFunc_Implementation()
 {
 	if (m_Combat)
@@ -132,3 +124,27 @@ void ABlasterCharacter::ServerEquippingFunc_Implementation()
 	}
 }
 
+bool ABlasterCharacter::IsWeaponEquipped()
+{
+	if(m_Combat && m_Combat->EquippedWeapon)
+		return true;
+	else
+		return false;
+}
+
+void ABlasterCharacter::AimingFunction(bool bAimPressed)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Blaster Character should aim - %d"), bAimPressed);
+	if (m_Combat)
+	{
+		m_Combat->SetAiming(bAimPressed);
+	}
+}
+
+bool ABlasterCharacter::IsADSActive()
+{
+	if (m_Combat && m_Combat->bAiming)
+		return true;
+	else
+		return false;
+}

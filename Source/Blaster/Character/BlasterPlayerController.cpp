@@ -60,6 +60,9 @@ void ABlasterPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this,
 			&ABlasterPlayerController::CrouchButtonPressed);
+
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Triggered, this,
+			&ABlasterPlayerController::AimButtonPressed);
 			
 	}
 }
@@ -141,6 +144,17 @@ void ABlasterPlayerController::CrouchButtonPressed()
 		}
 	}
 
+}
+
+void ABlasterPlayerController::AimButtonPressed(const FInputActionValue& InputActionValue)
+{
+	if (!IsLocalController())
+	{
+		return;
+	}
+
+	bool bADSActive = InputActionValue.Get<bool>();
+	BControlledCharacter->AimingFunction(bADSActive);
 }
 
 

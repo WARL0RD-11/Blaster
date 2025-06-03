@@ -31,6 +31,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
+	DOREPLIFETIME(UCombatComponent, bAiming);
 }
 
 
@@ -54,3 +55,19 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	//EquippedWeapon->ShowPickupWidget(false);
 }
 
+void UCombatComponent::SetAiming(bool bADSPressed)
+{
+	if (Character->HasAuthority())
+	{
+		bAiming = bADSPressed;
+	}
+	else
+	{
+		ServerSetAiming(bADSPressed);
+	}
+}
+
+void UCombatComponent::ServerSetAiming_Implementation(bool bADSPressed)
+{
+	bAiming = bADSPressed;
+}

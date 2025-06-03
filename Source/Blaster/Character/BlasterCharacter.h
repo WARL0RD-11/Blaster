@@ -51,9 +51,10 @@ public:
 	virtual void PostInitializeComponents() override;
 
 	void EquippingFunc();
-
 	bool IsWeaponEquipped();
 	
+	void AimingFunction(bool bAimPressed);
+	bool IsADSActive();
 
 
 };

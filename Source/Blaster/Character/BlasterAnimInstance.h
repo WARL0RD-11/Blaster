@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	bool bPlayerCrouched;
 
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool bADSActive;
+
 
 public:
 	virtual void NativeInitializeAnimation() override;

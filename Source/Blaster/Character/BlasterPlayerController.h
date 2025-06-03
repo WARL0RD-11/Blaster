@@ -46,6 +46,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> CrouchAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> AimAction;
 
 
 	//Function for Move
@@ -54,4 +56,5 @@ private:
 	void Jump();
 	void EquipButtonPressed();
 	void CrouchButtonPressed();
+	void AimButtonPressed(const FInputActionValue& InputActionValue);
 };
