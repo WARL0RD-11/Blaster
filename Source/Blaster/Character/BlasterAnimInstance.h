@@ -38,6 +38,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	bool bADSActive;
 
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float YawOffset;
+
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float Lean;
+
+
+	FRotator CharacterRotationLastFrame;
+	FRotator CharacterRotation;
+	float CalculateLean(float DeltaTime);
 
 public:
 	virtual void NativeInitializeAnimation() override;
