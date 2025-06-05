@@ -45,8 +45,8 @@ protected:
 	float Lean;
 
 
-	FRotator CharacterRotationLastFrame;
-	FRotator CharacterRotation;
+	FRotator CharacterRotationLastFrame = FRotator :: ZeroRotator;
+	FRotator CharacterRotation = FRotator::ZeroRotator;
 	float CalculateLean(float DeltaTime);
 
 public:
