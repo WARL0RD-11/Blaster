@@ -15,6 +15,10 @@ class BLASTER_API ABlasterCharacter : public ACharacter
 
 private:
 
+	ENetRole RemoteRole;
+	FString RemoteRoleString;
+
+
 	UPROPERTY(EditAnywhere)
 	TObjectPtr < USpringArmComponent>	SpringArm;
 
@@ -55,6 +59,8 @@ public:
 	
 	void AimingFunction(bool bAimPressed);
 	bool IsADSActive();
+
+	void FiringFunction(bool bFirePressed);
 
 
 };

@@ -63,6 +63,9 @@ void ABlasterPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Triggered, this,
 			&ABlasterPlayerController::AimButtonPressed);
+
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this,
+			&ABlasterPlayerController::FireButtonPressed);
 			
 	}
 }
@@ -155,6 +158,16 @@ void ABlasterPlayerController::AimButtonPressed(const FInputActionValue& InputAc
 
 	bool bADSActive = InputActionValue.Get<bool>();
 	BControlledCharacter->AimingFunction(bADSActive);
+}
+
+void ABlasterPlayerController::FireButtonPressed(const FInputActionValue& InputActionValue)
+{
+	if (!IsLocalController())
+	{
+		return;
+	}
+	bool bFireNow = InputActionValue.Get<bool>();
+	BControlledCharacter->FiringFunction(bFireNow);
 }
 
 

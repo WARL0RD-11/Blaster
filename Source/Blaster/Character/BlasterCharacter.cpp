@@ -49,6 +49,25 @@ void ABlasterCharacter::PostInitializeComponents()
 void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	RemoteRole = GetRemoteRole();
+	FString CRole;
+	switch (RemoteRole)
+	{
+	case ENetRole::ROLE_Authority:
+		CRole = FString("Authority");
+		break;
+	case ENetRole::ROLE_AutonomousProxy:
+		CRole = FString("Autonomous Proxy");
+		break;
+	case ENetRole::ROLE_SimulatedProxy:
+		CRole = FString("Simulated Proxy");
+		break;
+	case ENetRole::ROLE_None:
+		CRole = FString("None");
+		break;
+	}
+	RemoteRoleString = FString::Printf(TEXT("Remote Role: %s"), *CRole);
 	
 }
 
@@ -147,4 +166,14 @@ bool ABlasterCharacter::IsADSActive()
 		return true;
 	else
 		return false;
+}
+
+void ABlasterCharacter::FiringFunction(bool bFirePressed)
+{
+	if (IsWeaponEquipped())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Role  - %s"), *RemoteRoleString);
+		UE_LOG(LogTemp, Warning, TEXT("Should FIRE NOW - %d"), bFirePressed);
+	}
+		
 }
