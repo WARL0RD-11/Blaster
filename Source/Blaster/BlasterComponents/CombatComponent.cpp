@@ -90,3 +90,8 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bADSPressed)
 	bAiming = bADSPressed;
 	Character->GetCharacterMovement()->MaxWalkSpeed = bADSPressed ? AimWalkingSpeed : BaseWalkingSpeed;
 }
+
+void UCombatComponent::FireButtonActive(bool bFireNow)
+{
+	bActivateFiring = bFireNow;
+}

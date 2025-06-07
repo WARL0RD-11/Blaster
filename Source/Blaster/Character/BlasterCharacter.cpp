@@ -174,6 +174,7 @@ void ABlasterCharacter::FiringFunction(bool bFirePressed)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Role  - %s"), *RemoteRoleString);
 		UE_LOG(LogTemp, Warning, TEXT("Should FIRE NOW - %d"), bFirePressed);
+		m_Combat->FireButtonActive(bFirePressed);
 	}
 		
 }
