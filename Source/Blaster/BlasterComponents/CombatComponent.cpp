@@ -94,13 +94,25 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bADSPressed)
 void UCombatComponent::FireButtonActive(bool bFireNow)
 {
 	bActivateFiring = bFireNow;
+	if (bActivateFiring)
+	{
+		ServerFire();
+	}
+}
 
+void UCombatComponent::ServerFire_Implementation()
+{
+	MulticastFire();
+}
+
+void UCombatComponent::MulticastFire_Implementation()
+{
 	if (EquippedWeapon == nullptr)
 	{
 		return;
 	}
 
-	if (Character && bActivateFiring)
+	if (Character)
 	{
 		EquippedWeapon->Fire();
 	}
