@@ -23,6 +23,8 @@ public:
 	friend class ABlasterCharacter;
 	void EquipWeapon(AWeapon* WeaponToEquip);
 
+	FVector HitTarget;
+
 protected:
 	virtual void BeginPlay() override;
 

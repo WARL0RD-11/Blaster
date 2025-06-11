@@ -26,8 +26,8 @@ public:
 	void ShowPickupWidget(bool bShowWidget);
 	void SetWeaponState(EWeaponState EWS_State);
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	void Fire();
-
+	virtual void Fire(const FVector& HitTarget);
+	USkeletalMeshComponent* GetWeaponMesh();
 
 	UFUNCTION()
 	void OnRep_WeaponState();
