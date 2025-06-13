@@ -32,8 +32,6 @@ void UCombatComponent::BeginPlay()
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	FHitResult HitResult;
-	TraceUnderCrosshair(HitResult);
 }
 
 void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -99,16 +97,18 @@ void UCombatComponent::FireButtonActive(bool bFireNow)
 	bActivateFiring = bFireNow;
 	if (bActivateFiring)
 	{
-		ServerFire();
+		FHitResult HitResult;
+		TraceUnderCrosshair(HitResult);
+		ServerFire(HitResult.ImpactPoint);
 	}
 }
 
-void UCombatComponent::ServerFire_Implementation()
+void UCombatComponent::ServerFire_Implementation(const FVector_NetQuantize& TraceHitTarget)
 {
-	MulticastFire();
+	MulticastFire(TraceHitTarget);
 }
 
-void UCombatComponent::MulticastFire_Implementation()
+void UCombatComponent::MulticastFire_Implementation(const FVector_NetQuantize& TraceHitTarget)
 {
 	if (EquippedWeapon == nullptr)
 	{
@@ -117,7 +117,7 @@ void UCombatComponent::MulticastFire_Implementation()
 
 	if (Character)
 	{
-		EquippedWeapon->Fire(HitTarget);
+		EquippedWeapon->Fire(TraceHitTarget);
 	}
 }
 
@@ -145,7 +145,7 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 		GetWorld()->LineTraceSingleByChannel(TraceHitResult, Start, End,
 			ECollisionChannel::ECC_Visibility);
 
-		if (!TraceHitResult.bBlockingHit)
+		/*if (!TraceHitResult.bBlockingHit)
 		{
 			TraceHitResult.ImpactPoint = End;
 			HitTarget = End;
@@ -154,6 +154,6 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 		{
 			HitTarget = TraceHitResult.ImpactPoint;
 			DrawDebugSphere(GetWorld(), TraceHitResult.ImpactPoint, 12.f, 12, FColor::Red);
-		}
+		}*/
 	}
 }
