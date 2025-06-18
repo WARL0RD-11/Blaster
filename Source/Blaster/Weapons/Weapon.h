@@ -71,4 +71,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "WeaponProps")
 	TObjectPtr<class UAnimationAsset> FireAnimation;
 
+	UPROPERTY(EditAnywhere, Category = "WeaponProps")
+	TSubclassOf<class ACasing> ShellCasing;
+
 };

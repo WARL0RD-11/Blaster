@@ -7,7 +7,8 @@
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Net/UnrealNetwork.h"
 #include "Animation/AnimationAsset.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Casing.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 AWeapon::AWeapon()
 {
@@ -72,9 +73,33 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 
 void AWeapon::Fire(const FVector& HitTarget)
 {
+	UE_LOG(LogTemp, Error, TEXT("FIRE called"));
+
 	if (FireAnimation)
 	{
 		WeaponMesh->PlayAnimation(FireAnimation, false);
+	}
+
+	if (ShellCasing)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Shell is True"));
+		const USkeletalMeshSocket* AmmoEjectSocket = WeaponMesh->GetSocketByName(FName("AmmoEject"));
+
+		if (AmmoEjectSocket)
+		{
+			FTransform SocketTransform = AmmoEjectSocket->GetSocketTransform(WeaponMesh);
+			UWorld* World = GetWorld();
+
+			if (World)
+			{
+				World->SpawnActor<ACasing>(
+					ShellCasing,
+					SocketTransform.GetLocation(),
+					SocketTransform.GetRotation().Rotator());
+
+				UE_LOG(LogTemp, Error, TEXT("Shell Spawned called"));
+			}
+		}
 	}
 }
 
