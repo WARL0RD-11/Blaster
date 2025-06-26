@@ -13,9 +13,10 @@ ACasing::ACasing()
 	ShellMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ShellMesh"));
 	SetRootComponent(ShellMesh);
 	ShellMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+	ShellMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 	ShellMesh->SetSimulatePhysics(true);
 	ShellMesh->SetEnableGravity(true);
-	ShellEjectionImpulse = 5.0f;
+	ShellEjectionImpulse = -10.0f;
 
 }
 
