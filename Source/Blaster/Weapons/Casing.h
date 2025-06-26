@@ -18,8 +18,23 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> ShellMesh;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class USoundCue> EjectionSound;
+
 
 protected:
 	virtual void BeginPlay() override;
+	
+	UPROPERTY(EditAnywhere)
+	float ShellEjectionImpulse;
+
+	UFUNCTION()
+	virtual void OnHit(
+		UPrimitiveComponent*	HitComp,
+		AActor*					OtherActor,
+		UPrimitiveComponent*	OtherComp,
+		FVector					NormalImpulse,
+		const FHitResult&		Hit
+	);
 
 };
