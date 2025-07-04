@@ -32,6 +32,25 @@ public:
 	UFUNCTION()
 	void OnRep_WeaponState();
 
+
+	/*TEXTURES FOR CROSSHAIR*/
+	//
+	//
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<class UTexture2D> CrosshairsCenter;
+
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairsTop;
+
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairsBottom;
+
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairsLeft;
+
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairsRight;
+
 protected:
 	virtual void BeginPlay() override;
 	

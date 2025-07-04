@@ -4,6 +4,8 @@
 #include "CombatComponent.h"
 #include "Blaster/Weapons/Weapon.h"
 #include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/Character/BlasterPlayerController.h"
+#include "Blaster/HUD/BlasterHUD.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -25,6 +27,13 @@ void UCombatComponent::BeginPlay()
 	if (Character)
 	{
 		Character->GetCharacterMovement()->MaxWalkSpeed = BaseWalkingSpeed;
+		PlayerController = PlayerController == nullptr ? Cast<ABlasterPlayerController>(Character->Controller)
+			: PlayerController;
+
+		if (PlayerController)
+		{
+			HUD = HUD == nullptr ? Cast<ABlasterHUD>(PlayerController->GetHUD()) : HUD;
+		}
 	}
 }
 
@@ -32,6 +41,8 @@ void UCombatComponent::BeginPlay()
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	SetHUDCrosshairs(DeltaTime);
 }
 
 void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -156,4 +167,27 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 			DrawDebugSphere(GetWorld(), TraceHitResult.ImpactPoint, 12.f, 12, FColor::Red);
 		}*/
 	}
+}
+
+void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
+{
+	FHUDPackage HUDPackage; 
+
+	if (EquippedWeapon)
+	{
+		HUDPackage.CrosshairsCenter = EquippedWeapon->CrosshairsCenter;
+		HUDPackage.CrosshairsTop = EquippedWeapon->CrosshairsTop;
+		HUDPackage.CrosshairsBottom = EquippedWeapon->CrosshairsBottom;
+		HUDPackage.CrosshairsLeft = EquippedWeapon->CrosshairsLeft;
+		HUDPackage.CrosshairsRight = EquippedWeapon->CrosshairsRight;
+	}
+	else
+	{
+		HUDPackage.CrosshairsCenter = nullptr;
+		HUDPackage.CrosshairsTop = nullptr;
+		HUDPackage.CrosshairsBottom = nullptr;
+		HUDPackage.CrosshairsLeft = nullptr;
+		HUDPackage.CrosshairsRight = nullptr;
+	}
+	HUD->SetHUDPackage(HUDPackage);
 }
