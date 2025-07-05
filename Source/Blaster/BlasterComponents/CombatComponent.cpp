@@ -27,13 +27,6 @@ void UCombatComponent::BeginPlay()
 	if (Character)
 	{
 		Character->GetCharacterMovement()->MaxWalkSpeed = BaseWalkingSpeed;
-		PlayerController = PlayerController == nullptr ? Cast<ABlasterPlayerController>(Character->Controller)
-			: PlayerController;
-
-		if (PlayerController)
-		{
-			HUD = HUD == nullptr ? Cast<ABlasterHUD>(PlayerController->GetHUD()) : HUD;
-		}
 	}
 }
 
@@ -171,23 +164,33 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 
 void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 {
-	FHUDPackage HUDPackage; 
+	if (Character == nullptr || Character->Controller == nullptr) return;
 
-	if (EquippedWeapon)
+	PlayerController = PlayerController == nullptr ? Cast<ABlasterPlayerController>(Character->Controller)
+		: PlayerController;
+
+	if (PlayerController)
 	{
-		HUDPackage.CrosshairsCenter = EquippedWeapon->CrosshairsCenter;
-		HUDPackage.CrosshairsTop = EquippedWeapon->CrosshairsTop;
-		HUDPackage.CrosshairsBottom = EquippedWeapon->CrosshairsBottom;
-		HUDPackage.CrosshairsLeft = EquippedWeapon->CrosshairsLeft;
-		HUDPackage.CrosshairsRight = EquippedWeapon->CrosshairsRight;
+		HUD = HUD == nullptr ? Cast<ABlasterHUD>(PlayerController->GetHUD()) : HUD;
+
+		FHUDPackage HUDPackage;
+
+		if (EquippedWeapon)
+		{
+			HUDPackage.CrosshairsCenter = EquippedWeapon->CrosshairsCenter;
+			HUDPackage.CrosshairsTop = EquippedWeapon->CrosshairsTop;
+			HUDPackage.CrosshairsBottom = EquippedWeapon->CrosshairsBottom;
+			HUDPackage.CrosshairsLeft = EquippedWeapon->CrosshairsLeft;
+			HUDPackage.CrosshairsRight = EquippedWeapon->CrosshairsRight;
+		}
+		else
+		{
+			HUDPackage.CrosshairsCenter = nullptr;
+			HUDPackage.CrosshairsTop = nullptr;
+			HUDPackage.CrosshairsBottom = nullptr;
+			HUDPackage.CrosshairsLeft = nullptr;
+			HUDPackage.CrosshairsRight = nullptr;
+		}
+		HUD->SetHUDPackage(HUDPackage);
 	}
-	else
-	{
-		HUDPackage.CrosshairsCenter = nullptr;
-		HUDPackage.CrosshairsTop = nullptr;
-		HUDPackage.CrosshairsBottom = nullptr;
-		HUDPackage.CrosshairsLeft = nullptr;
-		HUDPackage.CrosshairsRight = nullptr;
-	}
-	HUD->SetHUDPackage(HUDPackage);
 }
