@@ -67,5 +67,11 @@ private:
 	float BaseWalkingSpeed;
 
 	bool bActivateFiring;
+
+	UPROPERTY()
+	float CrosshairVelocitySpreadFactor;
+
+	UPROPERTY()
+	float CrosshairInAirSpread;
 	
 };

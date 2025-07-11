@@ -164,14 +164,30 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 
 void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 {
-	if (Character == nullptr || Character->Controller == nullptr) return;
+	if (Character == nullptr || Character->Controller == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Character or Controller is null"));
+		return;
+	} 
 
 	PlayerController = PlayerController == nullptr ? Cast<ABlasterPlayerController>(Character->Controller)
 		: PlayerController;
 
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController cast failed"));
+		return;
+	}
+
 	if (PlayerController)
 	{
 		HUD = HUD == nullptr ? Cast<ABlasterHUD>(PlayerController->GetHUD()) : HUD;
+
+		if (!HUD)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("HUD cast failed"));
+			return;
+		}
 
 		FHUDPackage HUDPackage;
 
@@ -191,6 +207,26 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 			HUDPackage.CrosshairsLeft = nullptr;
 			HUDPackage.CrosshairsRight = nullptr;
 		}
+
+
+		FVector2D WalkingSpeedRange(0.f, Character->GetCharacterMovement()->MaxWalkSpeed);
+		FVector2D VelocityMultiplier(0.f, 1.0f);
+		FVector Velocity = Character->GetVelocity();
+		Velocity.Z = 0;
+
+		CrosshairVelocitySpreadFactor = FMath::GetMappedRangeValueClamped(WalkingSpeedRange, VelocityMultiplier, 
+			Velocity.Size());
+
+		if (Character->GetCharacterMovement()->IsFalling())
+		{
+			CrosshairInAirSpread = FMath::FInterpTo(CrosshairInAirSpread, 2.0f, DeltaTime, 2.0f);
+		}
+		else
+		{
+			CrosshairInAirSpread = FMath::FInterpTo(CrosshairInAirSpread, 0.0f, DeltaTime, 0.0f);
+		}
+
+		HUDPackage.CrosshairSpread = CrosshairVelocitySpreadFactor;
 		HUD->SetHUDPackage(HUDPackage);
 	}
 }

@@ -21,6 +21,7 @@ public:
 	TObjectPtr<class UTexture2D> CrosshairsBottom;
 	TObjectPtr<class UTexture2D> CrosshairsLeft;
 	TObjectPtr<class UTexture2D> CrosshairsRight;
+	float CrosshairSpread;
 
 };
 
@@ -35,6 +36,8 @@ public:
 private: 
 	FHUDPackage HUDPackage;
 
-	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter);
+	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread);
+
+	float CrosshairSpreadMax = 16.0f;
 	
 };
