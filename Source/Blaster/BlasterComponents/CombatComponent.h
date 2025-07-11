@@ -73,5 +73,9 @@ private:
 
 	UPROPERTY()
 	float CrosshairInAirSpread;
+
+	FTimerHandle InitTimerHandle;
+	void TryInitializeHUD();
+	bool bHUDInitialized;
 	
 };

@@ -28,6 +28,7 @@ void UCombatComponent::BeginPlay()
 	{
 		Character->GetCharacterMovement()->MaxWalkSpeed = BaseWalkingSpeed;
 	}
+	GetWorld()->GetTimerManager().SetTimer(InitTimerHandle, this, &UCombatComponent::TryInitializeHUD, 0.1f, true);
 }
 
 
@@ -35,6 +36,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	
 	SetHUDCrosshairs(DeltaTime);
 }
 
@@ -164,26 +166,26 @@ void UCombatComponent::TraceUnderCrosshair(FHitResult& TraceHitResult)
 
 void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 {
-	if (Character == nullptr || Character->Controller == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Character or Controller is null"));
-		return;
-	} 
+	//if (Character == nullptr || Character->Controller == nullptr)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Character or Controller is null"));
+	//	return;
+	//} 
 
-	PlayerController = PlayerController == nullptr ? Cast<ABlasterPlayerController>(Character->Controller)
-		: PlayerController;
+	//PlayerController = PlayerController == nullptr ? Cast<ABlasterPlayerController>(Character->Controller)
+	//	: PlayerController;
 
-	if (!PlayerController)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController cast failed"));
-		return;
-	}
+	//if (!PlayerController)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("PlayerController cast failed"));
+	//	return;
+	//}
 
-	if (PlayerController)
-	{
-		HUD = HUD == nullptr ? Cast<ABlasterHUD>(PlayerController->GetHUD()) : HUD;
+	//if (PlayerController)
+	//{
+	//	HUD = HUD == nullptr ? Cast<ABlasterHUD>(PlayerController->GetHUD()) : HUD;
 
-		if (!HUD)
+		if (!bHUDInitialized)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("HUD cast failed"));
 			return;
@@ -226,7 +228,23 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 			CrosshairInAirSpread = FMath::FInterpTo(CrosshairInAirSpread, 0.0f, DeltaTime, 0.0f);
 		}
 
-		HUDPackage.CrosshairSpread = CrosshairVelocitySpreadFactor;
+		HUDPackage.CrosshairSpread = CrosshairVelocitySpreadFactor + CrosshairInAirSpread;
 		HUD->SetHUDPackage(HUDPackage);
+}
+
+void UCombatComponent::TryInitializeHUD()
+{
+	//Custom Lazy Load of HUD to manage Exceptions
+
+	if (!Character || !Character->Controller) return;
+
+	PlayerController = Cast<ABlasterPlayerController>(Character->Controller);
+	if (!PlayerController) return;
+
+	HUD = Cast<ABlasterHUD>(PlayerController->GetHUD());
+	if (HUD)
+	{
+		bHUDInitialized = true;
+		GetWorld()->GetTimerManager().ClearTimer(InitTimerHandle);
 	}
 }
